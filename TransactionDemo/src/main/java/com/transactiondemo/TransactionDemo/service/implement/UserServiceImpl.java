@@ -6,6 +6,7 @@ import com.transactiondemo.TransactionDemo.entity.User;
 import com.transactiondemo.TransactionDemo.repository.UserRepository;
 import com.transactiondemo.TransactionDemo.service.TestNewService;
 import com.transactiondemo.TransactionDemo.service.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -38,7 +39,8 @@ public class UserServiceImpl implements UserService {
     // Che do mac dinh:
     // ollback chi thuc su duoc kich hoat voi RuntimeException
     // Voi cac Exception khac thi se khong rollback lai
-    @Transactional()
+    @Transactional(rollbackFor = Exception.class,
+            noRollbackFor = EntityNotFoundException.class)
     @Override
     public void updateUser(Long id, UserRequest request) throws Exception {
         Optional<User> userOp = userRepository.findById(id);
@@ -49,6 +51,7 @@ public class UserServiceImpl implements UserService {
 //            userRepository.save(user);
             testService.updateUserTwo(user);
 //            updateUserTwo(user);
+//            throw new Exception();
             throw new RuntimeException();
         }
     }
@@ -84,12 +87,16 @@ public class UserServiceImpl implements UserService {
             User user = userOp.get();
             user.setUsername(request.getUsername());
             user.setPassword(request.getPassword());
-            updateUserMandatoryTwo(user);
+//            updateUserMandatoryTwo(user);
+            testService.updateUserMandatoryTwo(user);
 //            throw new RuntimeException();
         }
 
     }
-    @Transactional(propagation = Propagation.MANDATORY)
+
+//    @Transactional(propagation = Propagation.MANDATORY)
+//    @Transactional(propagation = Propagation.NEVER)
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void updateUserMandatoryTwo(User user) {
         userRepository.save(user);
     }
