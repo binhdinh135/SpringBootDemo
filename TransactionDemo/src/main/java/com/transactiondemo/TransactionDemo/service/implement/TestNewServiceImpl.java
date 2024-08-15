@@ -22,5 +22,12 @@ public class TestNewServiceImpl implements TestNewService {
         userRepository.save(user);
 
     }
+    @Override
+    //    @Transactional(propagation = Propagation.MANDATORY)
+//    @Transactional(propagation = Propagation.NEVER)
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public void updateUserMandatoryTwo(User user) {
+        userRepository.save(user);
+    }
 
 }
