@@ -16,8 +16,12 @@ import lombok.experimental.FieldDefaults;
 @Entity
 public class Foo {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String text;
+
+    @Override
+    public String toString() {
+        return "Foo [id=" + id + ", text=" + text + "]";
+    }
 }

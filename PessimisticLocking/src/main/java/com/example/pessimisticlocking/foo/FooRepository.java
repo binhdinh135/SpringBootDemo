@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface FooRepository extends JpaRepository<Foo, Integer> {
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
+//    @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT a FROM Foo a WHERE a.id = :id")
     Optional<Foo> findAndLockById(Integer id);
 
