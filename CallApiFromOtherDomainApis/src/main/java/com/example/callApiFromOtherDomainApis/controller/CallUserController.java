@@ -3,6 +3,7 @@ package com.example.callApiFromOtherDomainApis.controller;
 import com.example.callApiFromOtherDomainApis.dto.UserResponse;
 import com.example.callApiFromOtherDomainApis.user.UserUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CallUserController {
 
+    @Autowired
     private final UserUtil userUtil;
 
     @GetMapping()
