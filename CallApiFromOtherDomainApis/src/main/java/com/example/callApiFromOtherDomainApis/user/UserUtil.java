@@ -6,6 +6,7 @@ import com.example.callApiFromOtherDomainApis.dto.UserResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
@@ -13,15 +14,27 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Component
 @Slf4j
 @RequiredArgsConstructor
+//@PropertySource("classpath:application.properties")
 public class UserUtil {
+//    @Value("${commonproject.client-idl}")
+    @Value("binhdc-test-b13c05hyhp1992")
+    private String clientId;
 
+//    @Value("${commonproject.client-secret}")
+    @Value("7yglkk5qd4orn2bl9jjzi4n6ayg09871uj2ld82yojskh3p5yj7wy0uq0rap95bzh56vobg5bqbyjx9htriwlqn2ixud2ximphq2aixyh7814jjlc9crokg41c03soufkc04f7ghcwtw2m94o60b7v")
+    private String clientSecret;
 
-    public static final String URI_API_USER_PROFILE = "/api/v1/employees";
+//    @Value("${commonproject.user-id}")
+    @Value("binh.dc")
+    private String userId;
+
+    public static final String URI_API_USER_PROFILE = "/identity/users";
 //    @Value("http://localhost:9000")
     public static final String urlWeb = "http://localhost:8081";
 
@@ -37,8 +50,10 @@ public class UserUtil {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         AuthenticationRequest info = new AuthenticationRequest();
-        info.setUsername("admin");
-        info.setPassword("admin");
+        info.setClientId(clientId);
+        info.setClientSecret(clientSecret);
+        info.setUserId(userId);
+
         // Tạo HttpEntity với DTO và headers
         HttpEntity<AuthenticationRequest> entity = new HttpEntity<>(info, headers);
 
@@ -62,8 +77,11 @@ public class UserUtil {
         } catch (HttpClientErrorException e) {
             if (e.getStatusCode().equals(HttpStatus.FORBIDDEN)) {
                 log.error("Forbidden");
+                log.error(Arrays.toString(e.getStackTrace()));
             } else {
                 log.error("Error token");
+                log.error(Arrays.toString(e.getStackTrace()));
+
             }
 
         } catch (Exception e) {
