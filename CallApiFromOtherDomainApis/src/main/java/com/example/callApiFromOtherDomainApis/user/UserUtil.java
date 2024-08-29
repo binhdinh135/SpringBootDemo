@@ -22,19 +22,19 @@ import java.util.List;
 @RequiredArgsConstructor
 //@PropertySource("classpath:application.properties")
 public class UserUtil {
-//    @Value("${commonproject.client-idl}")
-    @Value("binhdc-test-b13c05hyhp1992")
+    @Value("${commonproject.client-id}")
+//    @Value("binhdc-test-b13c05hyhp1992")
     private String clientId;
 
-//    @Value("${commonproject.client-secret}")
-    @Value("7yglkk5qd4orn2bl9jjzi4n6ayg09871uj2ld82yojskh3p5yj7wy0uq0rap95bzh56vobg5bqbyjx9htriwlqn2ixud2ximphq2aixyh7814jjlc9crokg41c03soufkc04f7ghcwtw2m94o60b7v")
+    @Value("${commonproject.client-secret}")
+//    @Value("7yglkk5qd4orn2bl9jjzi4n6ayg09871uj2ld82yojskh3p5yj7wy0uq0rap95bzh56vobg5bqbyjx9htriwlqn2ixud2ximphq2aixyh7814jjlc9crokg41c03soufkc04f7ghcwtw2m94o60b7v")
     private String clientSecret;
 
-//    @Value("${commonproject.user-id}")
-    @Value("binh.dc")
+    @Value("${commonproject.user-id}")
+//    @Value("binh.dc")
     private String userId;
 
-    public static final String URI_API_USER_PROFILE = "/identity/users";
+    public static final String URI_API_USER_PROFILE = "/identity/users/get-all-user-other-service";
 //    @Value("http://localhost:9000")
     public static final String urlWeb = "http://localhost:8081";
 
