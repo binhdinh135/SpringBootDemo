@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
@@ -16,12 +17,18 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 @Slf4j
 @RequiredArgsConstructor
 //@PropertySource("classpath:application.properties")
 public class UserUtil {
+
+    private final RedisTemplate redisTemplate;
+
+    private static final String TOKEN_KEY = "TOKEN_KEY";
+
     @Value("${commonproject.client-id}")
 //    @Value("binhdc-test-b13c05hyhp1992")
     private String clientId;
@@ -41,6 +48,13 @@ public class UserUtil {
     public static final String URI_API_GET_TOKEN = "/identity/auth/token-other-service";
 
     public String getToken() {
+        if (redisTemplate.opsForValue().get(TOKEN_KEY) == null) {
+            return resolveToken();
+        } else {
+            return Objects.requireNonNull(redisTemplate.opsForValue().get(TOKEN_KEY).toString());
+        }
+    }
+    private String resolveToken() {
         RestTemplateConfig restTemplateConfig = new RestTemplateConfig();
         RestTemplate restTemplate = restTemplateConfig.restTemplate();
         String token = null;
@@ -60,6 +74,10 @@ public class UserUtil {
         ResponseEntity<String> responseEntity = restTemplate.exchange(restUrl, HttpMethod.POST
                 , entity, String.class);
         token = responseEntity.getBody();
+
+        // Luu tru token vao Redis:
+        redisTemplate.opsForValue().set(TOKEN_KEY, token);
+
         return token;
     }
 

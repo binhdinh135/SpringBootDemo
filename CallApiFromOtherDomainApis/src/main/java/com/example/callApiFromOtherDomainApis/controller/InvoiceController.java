@@ -22,7 +22,7 @@ public class InvoiceController {
     }
 
     @GetMapping("/allInv")
-    public ResponseEntity<List<Invoice>> getAllInvoices(){
+    public ResponseEntity<List<Invoice>> getAllInvoices() {
         return ResponseEntity.ok(invoiceService.getAllInvoices());
     }
 
