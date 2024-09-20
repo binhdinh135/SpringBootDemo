@@ -22,6 +22,8 @@ public class CallUserController {
     @Autowired
     private final UserUtil userUtil;
 
+    // ham nay dung de goi mot API sang mot domain (project khac)
+    // trong project do ho se cung cap API cho chung ta.
     @GetMapping()
     public List<UserResponse> getUser() {
         List<UserResponse> users = new ArrayList<>();
